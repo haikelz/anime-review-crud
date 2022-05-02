@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json()); 
 app.use(bodyParser.urlencoded({extended: true}));
 
-// get all information from table movie_reviews in database 
+// get all information from table anime in database 
 app.get("/api/get", (req, res) => {
     const sqlSelect = "SELECT * FROM anime;";
     db.query(sqlSelect, (err, result) => {
@@ -17,7 +17,7 @@ app.get("/api/get", (req, res) => {
     })
 })
 
-// create movie
+// insert data to table anime
 app.post("/api/insert", (req, res) => {
     // catch animeName and animeReview from frontend
     const animeName = req.body.animeName;
@@ -29,6 +29,7 @@ app.post("/api/insert", (req, res) => {
     });
 });
 
+// delete data 
 app.delete("/api/delete/:animeName", (req, res) => {
     const name = req.params.animeName;
     const sqlDelete = "DELETE FROM anime WHERE animeName = ?;";
@@ -38,6 +39,7 @@ app.delete("/api/delete/:animeName", (req, res) => {
     });
 });
 
+// update data
 app.put("/api/update", (req, res) => {
     const name = req.body.animeName;
     const review = req.body.animeReview;
@@ -48,6 +50,7 @@ app.put("/api/update", (req, res) => {
     });
 });
 
+// configuration of database
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
