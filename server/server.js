@@ -2,12 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
-const cors = require("cors"); 
+const cors = require("cors");
 
 // fix cors issue
-app.use(cors()); 
-app.use(express.json()); 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // get all information from table anime in database 
 app.get("/api/get", (req, res) => {
@@ -22,7 +22,7 @@ app.post("/api/insert", (req, res) => {
     // catch animeName and animeReview from frontend
     const animeName = req.body.animeName;
     const animeReview = req.body.animeReview;
-    
+
     const sqlInsert = "INSERT INTO anime (animeName, animeReview) VALUES (?, ?);";
     db.query(sqlInsert, [animeName, animeReview], (err, result) => {
         console.log(result);
@@ -58,6 +58,6 @@ const db = mysql.createPool({
     database: "react_crud",
 });
 
-app.listen(3001, () => {
+app.listen(5000, () => {
     console.log("Udah nyala cui");
 });

@@ -1,9 +1,7 @@
 import {
   Thead,
-  Tbody,
   Tr,
   Th,
-  Td,
   TableContainer,
   Text,
   Input,
@@ -11,12 +9,11 @@ import {
   Textarea,
   Flex,
   Button,
-  IconButton,
   VStack,
 } from "@chakra-ui/react";
-import { DeleteIcon, RepeatIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import TableList from "../components/TableList";
 
 const AnimeReview = () => {
   const [animeName, setAnimeName] = useState("");
@@ -24,7 +21,7 @@ const AnimeReview = () => {
   const [newReview, setNewReview] = useState("");
   const [animeReviewList, setAnimeList] = useState([]);
 
-  const api = "http://localhost:3001/api";
+  const api = "http://localhost:5000/api";
 
   useEffect(() => {
     axios.get(`${api}/get`).then((response) => {
@@ -32,6 +29,7 @@ const AnimeReview = () => {
     });
   }, []);
 
+  // add data
   const submitReview = () => {
     axios.post(`${api}/insert`, {
       animeName: animeName,
@@ -43,10 +41,12 @@ const AnimeReview = () => {
     ]);
   };
 
+  // delete data
   const deleteReview = (anime) => {
     axios.delete(`${api}/delete/${anime}`);
   };
 
+  // update data
   const updateReview = (anime) => {
     axios.put(`${api}/update`, {
       animeName: anime,
@@ -97,45 +97,13 @@ const AnimeReview = () => {
               </Tr>
             </Thead>
 
-            {animeReviewList.map((value) => {
-              return (
-                <Tbody key={1}>
-                  <Tr>
-                    <Td>{value.animeName}</Td>
-                    <Td>{value.animeReview}</Td>
-                    <Td>
-                      <IconButton
-                        mr={2}
-                        onClick={() => {
-                          updateReview(value.animeName);
-                        }}
-                        icon={<RepeatIcon />}
-                        colorScheme={"blue"}
-                      />
-
-                      <IconButton
-                        mx={2}
-                        onClick={() => {
-                          deleteReview(value.animeName);
-                        }}
-                        icon={<DeleteIcon />}
-                        colorScheme={"blue"}
-                      />
-
-                      <Input
-                        placeholder={"Ubah Review"}
-                        ml={2}
-                        width={64}
-                        type={"text"}
-                        onChange={(e) => {
-                          setNewReview(e.target.value);
-                        }}
-                      />
-                    </Td>
-                  </Tr>
-                </Tbody>
-              );
-            })}
+            <TableList
+              animeReviewList={animeReviewList}
+              updateReview={updateReview}
+              deleteReview={deleteReview}
+              submitReview={submitReview}
+              setNewReview={setNewReview}
+            />
           </Table>
         </TableContainer>
       </Flex>
